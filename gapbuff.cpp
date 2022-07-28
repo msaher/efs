@@ -6,6 +6,7 @@
 #include <iostream>
 
 using std::ostream;
+using std::size_t;
 
 GapBuff::GapBuff()
 {
@@ -50,13 +51,13 @@ void GapBuff::insert(char c)
 
 void GapBuff::grow()
 {
-    const int glen = DEFAULT_GAP_LEN;
+    const size_t glen = DEFAULT_GAP_LEN;
     capacity += glen;
     arr = (char*) realloc(arr, capacity*sizeof(char));
     if (arr == nullptr)
         throw std::bad_alloc(); 
 
-    for (int i = r; i < r + rlen; i++)
+    for (size_t i = r; i < r + rlen; i++)
         arr[i+glen] = arr[i];
 
     r += glen;
@@ -78,13 +79,13 @@ GapBuff::~GapBuff()
 
 ostream& operator<<(ostream& out, GapBuff& buf)
 {
-    for (int i = 0; i < buf.l; i++)
+    for (size_t i = 0; i < buf.l; i++)
         out << buf.arr[i];
 
-    for (int i = buf.l; i < buf.r; i++)
+    for (size_t i = buf.l; i < buf.r; i++)
         out << "_";
 
-    for (int i = buf.r; i < buf.r + buf.rlen; i++)
+    for (size_t i = buf.r; i < buf.r + buf.rlen; i++)
         out << buf.arr[i];
 
     out << "\n"; // TODO: remove this

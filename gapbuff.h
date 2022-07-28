@@ -12,7 +12,7 @@ class GapBuff {
 
     std::size_t rlen; // length after the gap
 
-    static const int DEFAULT_GAP_LEN = 5;
+    static const std::size_t DEFAULT_GAP_LEN = 5;
 
     public:
     friend std::ostream& operator<<(std::ostream& out, GapBuff& gb);
