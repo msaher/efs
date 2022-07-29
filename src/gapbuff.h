@@ -13,9 +13,8 @@ class GapBuff {
 
     std::size_t rlen; // length after the gap
 
-    static const std::size_t DEFAULT_GAP_LEN = 5;
-
     public:
+    static const std::size_t DEFAULT_GAP_LEN = 5;
     GapBuff();
     ~GapBuff();
     bool left();
