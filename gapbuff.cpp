@@ -7,17 +7,20 @@
 
 using std::ostream;
 using std::size_t;
+using std::string;
 
-GapBuff::GapBuff()
+template <typename T>
+GapBuff<T>::GapBuff()
 {
     capacity = DEFAULT_GAP_LEN;
-    arr = (char*) malloc(capacity);
+    arr = (T*) malloc(capacity);
     l = 0;
     r = capacity;
     rlen = 0;
 }
 
-bool GapBuff::left()
+template <typename T>
+bool GapBuff<T>::left()
 {
     if (l <= 1) // 1 because we don't want a___ to be moved
         return false;
@@ -28,7 +31,8 @@ bool GapBuff::left()
     return true;
 }
 
-bool GapBuff::right()
+template <typename T>
+bool GapBuff<T>::right()
 {
     if (r == capacity)
         return false;
@@ -39,7 +43,8 @@ bool GapBuff::right()
     return true;
 }
 
-void GapBuff::insert(char c)
+template <typename T>
+void GapBuff<T>::insert(T c)
 {
     arr[l++] = c;
 
@@ -49,11 +54,12 @@ void GapBuff::insert(char c)
     /* std::cout << *this; */
 }
 
-void GapBuff::grow()
+template <typename T>
+void GapBuff<T>::grow()
 {
     const size_t glen = DEFAULT_GAP_LEN;
     capacity += glen;
-    arr = (char*) realloc(arr, capacity*sizeof(char));
+    arr = (T*) realloc(arr, capacity*sizeof(T));
     if (arr == nullptr)
         throw std::bad_alloc(); 
 
@@ -63,7 +69,8 @@ void GapBuff::grow()
     r += glen;
 }
 
-bool GapBuff::remove()
+template <typename T>
+bool GapBuff<T>::remove()
 {
     if(l == 0)
         return false;
@@ -71,24 +78,31 @@ bool GapBuff::remove()
     return true;
 }
 
-GapBuff::~GapBuff()
+template <typename T>
+GapBuff<T>::~GapBuff()
 {
     free(arr);
 }
 
 
-ostream& operator<<(ostream& out, GapBuff& buf)
+template <typename T>
+string GapBuff<T>::to_string()
 {
-    for (size_t i = 0; i < buf.l; i++)
-        out << buf.arr[i];
+    string s {};
+    for (size_t i = 0; i < l; i++)
+        s.append(arr[i]);
 
-    for (size_t i = buf.l; i < buf.r; i++)
-        out << "_";
+    for (size_t i = l; i < r; i++)
+        s.append("_");
 
-    for (size_t i = buf.r; i < buf.r + buf.rlen; i++)
-        out << buf.arr[i];
+    for (size_t i = r; i < r + rlen; i++)
+        s.append(arr[i]);
 
-    out << "\n"; // TODO: remove this
+    return s;
+}
 
-    return out;
+template<typename T>
+ostream& operator<<(ostream& out, GapBuff<T> buf)
+{
+    return out << buf.to_string();
 }
