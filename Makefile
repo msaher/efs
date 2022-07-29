@@ -1,5 +1,8 @@
-srcs := $(wildcard *.cpp)
-objs := $(patsubst %.cpp, %.o, $(srcs))
+srcdir = src
+objdir = obj
+testdir = test
+srcs := $(wildcard $(srcdir)/*.cpp)
+objs := $(patsubst $(srcdir)/%.cpp, $(objdir)/%.o, $(srcs))
 
 CXXFLAGS := -g -Wall -Wextra
 bin := vic
@@ -11,11 +14,11 @@ all: $(bin)
 $(bin): $(objs)
 	$(CXX) $(CXXFALGS) $(objs) -o $(bin)
 
-%.o: %.cpp %.h
-	$(CXX) $(CXXFLAGS) -c $<
+$(objdir)/%.o: $(srcdir)/%.cpp $(srcdir)/%.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $<
+$(objdir)/%.o: $(srcdir)/%.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
 	rm $(bin) $(objs)
