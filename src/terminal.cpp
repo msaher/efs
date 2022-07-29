@@ -2,11 +2,13 @@
 #include <unistd.h>
 #include <stdexcept>
 #include <string>
+#include <sstream>
 #include <iostream>
 #include <sys/ioctl.h> // for finding window size
 #include "editor.h"
 
 using std::cout;
+using std::stringstream;
 using std::string;
 
 struct termios origattr;
@@ -46,13 +48,25 @@ void window_size(unsigned int& screen_rows, unsigned int& screen_cols)
     screen_cols = ws.ws_col;
 }
 
+void draw_rows(stringstream& s, Editor& ed)
+{
+    for (unsigned int i = 0; i < ed.screen_rows-1; i++)
+        s << "~\r\n";
+    s << "~";
+}
+
 void refresh_screen(Editor& ed)
 {
-    string s;
-    s.append("\x1b[?25l"); // hide cursor
-    s.append("\x1b[2J"); // clear the screen
-    s.append("\x1b[H"); // go to row 1 column 1
-    s.append("\x1b[?25h"); // unhide cursor
+    stringstream s;
+    s << "\x1b[?25l"; // hide cursor
+    s << "\x1b[2J"; // clear the screen
+    s << "\x1b[H"; // go to row 1 column 1
+
     window_size(ed.screen_rows, ed.screen_cols);
-    cout << s;
+    draw_rows(s, ed);
+
+    s << "\x1b[" << ed.cx+1 << ";" << ed.cy+1 << "H"; 
+    s << "\x1b[?25h"; // unhide cursor
+
+    cout << s.str();
 }

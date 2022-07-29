@@ -6,5 +6,5 @@ struct Ed {
     unsigned int cy; // y coordinate
     unsigned int screen_cols; // window size
     unsigned int screen_rows;
-    GapBuff<GapBuff<char>> buf; // 2d gap buffer
+    GapBuff<char> buf;
 };
