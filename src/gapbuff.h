@@ -22,5 +22,6 @@ class GapBuff {
     void grow();
     void insert(T);
     bool remove();
-    std::string to_string();
+
+    friend std::string to_string(GapBuff<char>&);
 };
