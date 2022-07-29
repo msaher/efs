@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <sys/ioctl.h> // for finding window size
+#include "editor.h"
 
 using std::cout;
 using std::string;
@@ -34,7 +35,7 @@ void set_raw()
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
 
-void window_size(int& screen_rows, int& screen_cols)
+void window_size(unsigned int& screen_rows, unsigned int& screen_cols)
 {
 
     struct winsize ws;
@@ -45,14 +46,13 @@ void window_size(int& screen_rows, int& screen_cols)
     screen_cols = ws.ws_col;
 }
 
-void refresh_screen()
+void refresh_screen(Editor& ed)
 {
     string s;
     s.append("\x1b[?25l"); // hide cursor
     s.append("\x1b[2J"); // clear the screen
     s.append("\x1b[H"); // go to row 1 column 1
     s.append("\x1b[?25h"); // unhide cursor
-
-    draw_rows();
+    window_size(ed.screen_rows, ed.screen_cols);
     cout << s;
 }

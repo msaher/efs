@@ -1,3 +1,5 @@
+#ifndef GAPBUFF_H
+#define GAPBUFF_H
 #include <vector>
 #include <cstddef>
 #include <iostream>
@@ -25,3 +27,5 @@ class GapBuff {
 
     friend std::string to_string(GapBuff<char>&);
 };
+
+#endif
