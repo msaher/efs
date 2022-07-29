@@ -13,7 +13,5 @@ BOOST_AUTO_TEST_CASE(gapbuff_test)
     GapBuff<char> buf{};
     buf.insert('c');
     buf.insert('d');
-    std::cout << to_string(buf);
     BOOST_CHECK(buf.left() == true);
-    std::cout << to_string(buf);
 }
