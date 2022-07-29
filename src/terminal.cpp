@@ -1,7 +1,12 @@
 #include <termios.h>
 #include <unistd.h>
 #include <stdexcept>
-	
+#include <string>
+#include <iostream>
+#include <sys/ioctl.h> // for finding window size
+
+using std::cout;
+using std::string;
 
 struct termios origattr;
 
@@ -27,4 +32,14 @@ void set_raw()
     /* raw.c_cc[VTIME] = 1; */
 
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
+}
+void window_size(int& screen_rows, int& screen_cols)
+{
+
+    struct winsize ws;
+    if (ioctl(STDERR_FILENO, TIOCGWINSZ, &ws) == -1 || ws.ws_col == 0)
+        throw std::runtime_error("Can't find window size");
+
+    screen_rows = ws.ws_row;
+    screen_cols = ws.ws_col;
 }
