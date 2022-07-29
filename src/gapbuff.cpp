@@ -84,25 +84,19 @@ GapBuff<T>::~GapBuff()
     free(arr);
 }
 
-
-template <typename T>
-string GapBuff<T>::to_string()
+string to_string(GapBuff<char>& buf)
 {
     string s {};
-    for (size_t i = 0; i < l; i++)
-        s.append(arr[i]);
+    for (size_t i = 0; i < buf.l; i++)
+        s += (buf.arr[i]);
 
-    for (size_t i = l; i < r; i++)
-        s.append("_");
+    for (size_t i = buf.l; i < buf.r; i++)
+        s += ("_");
 
-    for (size_t i = r; i < r + rlen; i++)
-        s.append(arr[i]);
+    for (size_t i = buf.r; i < buf.r + buf.rlen; i++)
+        s += buf.arr[i];
 
     return s;
 }
 
-template<typename T>
-ostream& operator<<(ostream& out, GapBuff<T> buf)
-{
-    return out << buf.to_string();
-}
+template class GapBuff<char>;
