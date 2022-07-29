@@ -3,7 +3,7 @@ objdir := obj
 srcs := $(wildcard $(srcdir)/*.cpp)
 objs := $(patsubst $(srcdir)/%.cpp, $(objdir)/%.o, $(srcs))
 
-CXXFLAGS := -g -Wall -Wextra
+CXXFLAGS := -g -Wall -Wextra --std=c++20
 bin := vic
 
 .PHONEY: all clean test
