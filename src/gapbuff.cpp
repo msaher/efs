@@ -97,17 +97,18 @@ GapBuff<T>::~GapBuff()
     free(arr);
 }
 
-string to_string(GapBuff<char>& buf)
+template <>
+string GapBuff<char>::to_string()
 {
     string s {};
-    for (size_t i = 0; i < buf.l; i++)
-        s += (buf.arr[i]);
+    for (size_t i = 0; i < l; i++)
+        s += (arr[i]);
 
-    for (size_t i = buf.l; i < buf.r; i++)
+    for (size_t i = l; i < r; i++)
         s += ("_");
 
-    for (size_t i = buf.r; i < buf.r + buf.rlen; i++)
-        s += buf.arr[i];
+    for (size_t i = r; i < r + rlen; i++)
+        s += arr[i];
 
     return s;
 }
