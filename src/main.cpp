@@ -13,12 +13,11 @@ Editor ED {}; // global editor state
 int main()
 {
     set_raw();
-    refresh_screen(ED);
 
     char c;
     while (true) {
+        refresh_screen(ED);
         cin >> c;
-        cout << c << "\r\n";
         if (c == 'q')
             break;
     }
