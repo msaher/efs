@@ -18,6 +18,7 @@ class GapBuff {
     public:
     static const std::size_t DEFAULT_GAP_LEN = 5;
     GapBuff(std::size_t cap=DEFAULT_GAP_LEN);
+    GapBuff(std::string);
     ~GapBuff();
     bool left();
     bool right();

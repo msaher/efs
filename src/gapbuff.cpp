@@ -4,6 +4,8 @@
 #include <cstdlib>
 #include "gapbuff.h"
 #include <iostream>
+#include <string>
+#include <string.h> // for memcpy
 
 using std::ostream;
 using std::size_t;
@@ -13,11 +15,22 @@ template <typename T>
 GapBuff<T>::GapBuff(size_t cap)
 {
     arrcap = cap;
-    arr = (T*) malloc(cap);
+    arr = (T*) malloc(cap*sizeof(T));
     l = 0;
     r = cap;
     rlen = 0;
 }
+
+template <>
+GapBuff<char>::GapBuff(string str)
+{
+    arrcap = rlen = str.length();
+    arr = (char*) malloc(arrcap*sizeof(char)+1); // +1 for the gap of
+    l = 0;
+    r = 1;
+    memcpy((arr+1), str.c_str(), rlen);
+}
+
 
 template <typename T>
 bool GapBuff<T>::left()
