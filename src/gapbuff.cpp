@@ -10,12 +10,12 @@ using std::size_t;
 using std::string;
 
 template <typename T>
-GapBuff<T>::GapBuff()
+GapBuff<T>::GapBuff(size_t cap)
 {
-    capacity = DEFAULT_GAP_LEN;
-    arr = (T*) malloc(capacity);
+    arrcap = cap;
+    arr = (T*) malloc(cap);
     l = 0;
-    r = capacity;
+    r = cap;
     rlen = 0;
 }
 
@@ -34,7 +34,7 @@ bool GapBuff<T>::left()
 template <typename T>
 bool GapBuff<T>::right()
 {
-    if (r == capacity)
+    if (r == arrcap)
         return false;
 
     arr[l++] = arr[r++];
@@ -57,9 +57,9 @@ void GapBuff<T>::insert(T c)
 template <typename T>
 void GapBuff<T>::grow()
 {
-    const size_t glen = DEFAULT_GAP_LEN;
-    capacity += glen;
-    arr = (T*) realloc(arr, capacity*sizeof(T));
+    const size_t glen = arrcap; // gap length
+    arrcap *= 2;
+    arr = (T*) realloc(arr, arrcap*sizeof(T));
     if (arr == nullptr)
         throw std::bad_alloc(); 
 
