@@ -12,6 +12,7 @@ using std::cout;
 using std::stringstream;
 using std::string;
 using std::size_t;
+using std::min;
 
 struct termios origattr;
 
@@ -52,12 +53,16 @@ void window_size(unsigned int& screen_rows, unsigned int& screen_cols)
 
 void draw_rows(stringstream& s, Editor& ed)
 {
-    size_t numrows = ed.buf.size();
-    int cols = ed.screen_cols;
+    size_t numrows = ed.buf.size(); // rows containing text
+    size_t srows = ed.screen_rows;
+    size_t scols = ed.screen_cols;
+
     string line; // newline not included
+    size_t len;
     for (size_t i = 0; i < numrows; i++) {
         line = ed.buf[i]->to_string();
-        s.write(line.c_str(), line.length());
+        len = min(line.length(), scols);
+        s.write(line.c_str(), len);
         s << "\r\n";
     }
 
