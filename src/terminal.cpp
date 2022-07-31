@@ -51,21 +51,28 @@ void window_size(unsigned int& screen_rows, unsigned int& screen_cols)
     screen_cols = ws.ws_col;
 }
 
+// draw a line that does not exceed a limit
+void draw_line(stringstream& s, string&& line, size_t lim)
+{
+    size_t len = min(line.length(), lim);
+    s.write(line.c_str(), len);
+}
+
 void draw_rows(stringstream& s, Editor& ed)
 {
     size_t numrows = ed.buf.size(); // rows containing text
     size_t srows = ed.screen_rows;
     size_t scols = ed.screen_cols;
 
-    string line; // newline not included
-    size_t len;
-    for (size_t i = 0; i < numrows; i++) {
-        line = ed.buf[i]->to_string();
-        len = min(line.length(), scols);
-        s.write(line.c_str(), len);
-        s << "\r\n";
-    }
+    for (size_t i = 0; i < srows; i++) {
+        if (i < numrows)
+            draw_line(s, ed.buf[i]->to_string(), scols);
+        else
+            s << "~";
 
+        if (i != srows-1)
+            s << "\r\n";
+    }
 }
 
 void clear_screen()
