@@ -6,10 +6,12 @@
 #include <iostream>
 #include <sys/ioctl.h> // for finding window size
 #include "editor.h"
+#include <algorithm>
 
 using std::cout;
 using std::stringstream;
 using std::string;
+using std::size_t;
 
 struct termios origattr;
 
@@ -50,9 +52,20 @@ void window_size(unsigned int& screen_rows, unsigned int& screen_cols)
 
 void draw_rows(stringstream& s, Editor& ed)
 {
-    for (unsigned int i = 0; i < ed.screen_rows-1; i++)
-        s << "~\r\n";
-    s << "~";
+    size_t numrows = ed.buf.size();
+    int cols = ed.screen_cols;
+    string line; // newline not included
+    for (size_t i = 0; i < numrows; i++) {
+        line = ed.buf[i]->to_string();
+        s.write(line.c_str(), line.length());
+        s << "\r\n";
+    }
+
+}
+
+void clear_screen()
+{
+    cout << "\x1b[2J"; // clear the screen
 }
 
 void refresh_screen(Editor& ed)

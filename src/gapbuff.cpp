@@ -98,7 +98,7 @@ GapBuff<T>::~GapBuff()
 }
 
 template <>
-string GapBuff<char>::to_string()
+string GapBuff<char>::gap_string() // for testing
 {
     string s {};
     for (size_t i = 0; i < l; i++)
@@ -106,6 +106,19 @@ string GapBuff<char>::to_string()
 
     for (size_t i = l; i < r; i++)
         s += ("_");
+
+    for (size_t i = r; i < r + rlen; i++)
+        s += arr[i];
+
+    return s;
+}
+
+template <>
+string GapBuff<char>::to_string()
+{
+    string s {};
+    for (size_t i = 0; i < l; i++)
+        s += (arr[i]);
 
     for (size_t i = r; i < r + rlen; i++)
         s += arr[i];

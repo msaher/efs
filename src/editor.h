@@ -2,14 +2,20 @@
 #define EDITOR_H
 #include "gapbuff.h"
 #include <vector>
-
-using std::vector;
+#include <string>
+#include <fstream>
 
 struct Editor {
     unsigned int cx; // actual x coordinate
     unsigned int cy; // y coordinate
     unsigned int screen_cols; // window size
     unsigned int screen_rows;
-    vector<GapBuff<char>> buf;
+    std::string filename;
+    std::vector<GapBuff<char>*> buf;
+    ~Editor();
 };
+
+void load(Editor&, std::ifstream&);
+void load(Editor&, std::string&);
+
 #endif

@@ -25,5 +25,5 @@ BOOST_AUTO_TEST_CASE(strconst)
 {
     string s = "this is a piece of text";
     GapBuff<char> buf {s};
-    BOOST_CHECK(buf.to_string() == "_" + s);
+    BOOST_CHECK(buf.gap_string() == "_" + s);
 }
