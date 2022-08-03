@@ -28,10 +28,6 @@ int main(int, char* argv[])
         refresh_screen(ED);
         c = read_key();
         process_key(c, ED);
-
-        /* cout << static_cast<char>(c) << " (" << c << ")\r\n"; */
-        /* if (c == 'q') */
-        /*     break; */
     }
 
     return 0;
