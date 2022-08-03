@@ -90,7 +90,7 @@ void refresh_screen(Editor& ed)
     window_size(ed.screen_rows, ed.screen_cols);
     draw_rows(s, ed);
 
-    s << "\x1b[" << ed.cx+1 << ";" << ed.cy+1 << "H"; 
+    s << "\x1b[" << ed.cy+1 << ";" << ed.cx+1 << "H";
     s << "\x1b[?25h"; // unhide cursor
 
     cout << s.str();
