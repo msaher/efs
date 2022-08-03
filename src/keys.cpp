@@ -1,5 +1,7 @@
 #include <iostream>
+#include <stdlib.h>
 #include "keys.h"
+#include "editor.h"
 
 using std::cin;
 
@@ -33,7 +35,16 @@ int read_key()
     return c;
 }
 
-void process_key(int c)
+void process_key(int c, Editor& ed)
 {
-
+    switch (c) {
+        case 'q':
+            exit(0);
+            break;
+        case LEFT:
+        case RIGHT:
+        case DOWN:
+        case UP:
+            move_cursor(ed, c);
+    }
 }

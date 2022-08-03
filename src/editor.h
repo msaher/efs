@@ -17,5 +17,6 @@ struct Editor {
 
 void load(Editor&, std::ifstream&);
 void load(Editor&, std::string&);
+void move_cursor(Editor&, int);
 
 #endif

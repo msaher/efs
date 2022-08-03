@@ -4,6 +4,7 @@
 #include "gapbuff.h"
 #include "editor.h"
 #include <fstream>
+#include "keys.h"
 
 using std::cout;
 using std::cin;
@@ -22,12 +23,15 @@ int main(int, char* argv[])
         load(ED, ED.filename);
     }
 
-    char c;
+    int c;
     while (true) {
         refresh_screen(ED);
-        cin >> c;
-        if (c == 'q')
-            break;
+        c = read_key();
+        process_key(c, ED);
+
+        /* cout << static_cast<char>(c) << " (" << c << ")\r\n"; */
+        /* if (c == 'q') */
+        /*     break; */
     }
 
     return 0;

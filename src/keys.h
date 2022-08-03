@@ -1,6 +1,7 @@
 #ifndef KEYS_H
 #define KEYS_H
 #include <limits.h>
+#include "editor.h"
 
 enum Keys {
     BACKSPACE = 127,
@@ -13,7 +14,6 @@ enum Keys {
 };
 
 int read_key(void);
-void process_key(int c);
-
+void process_key(int c, Editor& ed);
 
 #endif
