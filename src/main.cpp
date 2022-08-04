@@ -6,8 +6,6 @@
 #include <fstream>
 #include "keys.h"
 
-using std::cout;
-using std::cin;
 using std::string;
 using std::ifstream;
 

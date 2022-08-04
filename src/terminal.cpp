@@ -52,27 +52,29 @@ void window_size(unsigned int& screen_rows, unsigned int& screen_cols)
 }
 
 // draw a line that does not exceed a limit
-void draw_line(stringstream& s, string&& line, size_t lim)
+void draw_line(stringstream& s, string&& line, size_t start, size_t lim)
 {
-    size_t len = min(line.length(), lim);
-    s.write(line.c_str(), len);
+    // TODO: is this efficient?
+    const string subline = line.substr(start);
+    s.write(subline.c_str(), min(subline.length(), lim));
 }
 
 void draw_rows(stringstream& s, Editor& ed)
 {
-    size_t numrows = ed.buf.size(); // rows containing text
-    size_t srows = ed.screen_rows;
-    size_t scols = ed.screen_cols;
-
-    for (size_t i = 0; i < srows; i++) {
-        if (i < numrows)
-            draw_line(s, ed.buf[i]->to_string(), scols);
+    size_t row;
+    size_t numrows = ed.buf.size();
+    for (size_t i = 0; i < ed.screen_rows; i++) {
+        row = i + ed.rowoff;
+        if (row < numrows)
+            draw_line(s, ed.buf[row]->to_string(), 0, ed.screen_cols);
         else
             s << "~";
 
-        if (i != srows-1)
+        if (i != ed.screen_rows-1)
             s << "\r\n";
+
     }
+
 }
 
 void clear_screen()
@@ -82,15 +84,17 @@ void clear_screen()
 
 void refresh_screen(Editor& ed)
 {
+    window_size(ed.screen_rows, ed.screen_cols);
+    scroll_maybe(ed);
+
     stringstream s;
     s << "\x1b[?25l"; // hide cursor
     s << "\x1b[2J"; // clear the screen
     s << "\x1b[H"; // go to row 1 column 1
 
-    window_size(ed.screen_rows, ed.screen_cols);
     draw_rows(s, ed);
 
-    s << "\x1b[" << ed.cy+1 << ";" << ed.cx+1 << "H";
+    s << "\x1b[" << (ed.cy-ed.rowoff)+1 << ";" << (ed.cx-ed.coloff)+1 << "H";
     s << "\x1b[?25h"; // unhide cursor
 
     cout << s.str();

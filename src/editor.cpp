@@ -17,7 +17,6 @@ void load(Editor& ed, ifstream& file)
     }
 }
 
-
 void move_cursor(Editor& ed, int dir)
 {
     switch (dir) {
@@ -26,7 +25,7 @@ void move_cursor(Editor& ed, int dir)
                 ed.cx--;
             break;
         case RIGHT:
-            if (ed.cx < ed.screen_cols)
+            if (ed.cx < ed.buf[ed.cy]->size())
                 ed.cx++;
             break;
         case UP:
@@ -34,13 +33,21 @@ void move_cursor(Editor& ed, int dir)
                 ed.cy--;
             break;
         case DOWN:
-            if (ed.cy < ed.screen_rows)
+            if (ed.cy < ed.buf.size())
                 ed.cy++;
             break;
         default:
             // TODO:
             break;
     }
+}
+
+void scroll_maybe(Editor& ed)
+{
+    if (ed.cy < ed.rowoff)
+        ed.rowoff = ed.cy;
+    else if (ed.cy >= ed.rowoff + ed.screen_rows)
+        ed.rowoff = ed.cy - ed.screen_rows + 1;
 }
 
 void load(Editor& ed, string& filename)

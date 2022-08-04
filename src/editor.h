@@ -12,11 +12,15 @@ struct Editor {
     unsigned int screen_rows;
     std::string filename;
     std::vector<GapBuff<char>*> buf;
+    unsigned int currow;
+    unsigned int rowoff;
+    unsigned int coloff;
     ~Editor();
 };
 
 void load(Editor&, std::ifstream&);
 void load(Editor&, std::string&);
 void move_cursor(Editor&, int);
+void scroll_maybe(Editor& ed);
 
 #endif

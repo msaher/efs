@@ -126,4 +126,10 @@ string GapBuff<char>::to_string()
     return s;
 }
 
+template<typename T>
+size_t GapBuff<T>::size()
+{
+    return r+rlen;
+}
+
 template class GapBuff<char>;
