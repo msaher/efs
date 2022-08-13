@@ -54,6 +54,9 @@ void window_size(unsigned int& screen_rows, unsigned int& screen_cols)
 // draw a line that does not exceed a limit
 void draw_line(stringstream& s, string&& line, size_t start, size_t lim)
 {
+    if (start > line.length())
+        return;
+
     // TODO: is this efficient?
     const string subline = line.substr(start);
     s.write(subline.c_str(), min(subline.length(), lim));
@@ -66,7 +69,7 @@ void draw_rows(stringstream& s, Editor& ed)
     for (size_t i = 0; i < ed.screen_rows; i++) {
         row = i + ed.rowoff;
         if (row < numrows)
-            draw_line(s, ed.buf[row]->to_string(), 0, ed.screen_cols);
+            draw_line(s, ed.buf[row]->to_string(), ed.coloff, ed.screen_cols);
         else
             s << "~";
 

@@ -42,7 +42,7 @@ void move_cursor(Editor& ed, int dir)
                 ed.cx--;
             break;
         case RIGHT:
-            if (row != NULL && ed.cx < ed.buf[ed.cy]->size())
+            if (row != NULL && ed.cx < row->size())
                 ed.cx++;
             break;
         case UP:
@@ -57,7 +57,6 @@ void move_cursor(Editor& ed, int dir)
             // TODO:
             break;
     }
-
 	row = currow(ed);
 	if (row != NULL)
 	  ed.cx = min<size_t>(ed.cx, row->size());
@@ -71,6 +70,12 @@ void scroll_maybe(Editor& ed)
         ed.rowoff = ed.cy;
     else if (ed.cy >= ed.rowoff + ed.screen_rows)
         ed.rowoff = ed.cy - ed.screen_rows + 1;
+
+    if (ed.cx < ed.coloff)
+      ed.coloff = ed.cx;
+    else if(ed.cx >= ed.coloff + ed.screen_cols)
+      ed.coloff = ed.cx - ed.screen_cols + 1;
+
 }
 
 void load(Editor& ed, string& filename)
