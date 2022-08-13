@@ -22,5 +22,6 @@ void load(Editor&, std::ifstream&);
 void load(Editor&, std::string&);
 void move_cursor(Editor&, int);
 void scroll_maybe(Editor& ed);
-
+inline size_t numrows(const Editor&);
+inline GapBuff<char>* currow(const Editor&);
 #endif

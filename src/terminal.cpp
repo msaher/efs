@@ -72,7 +72,6 @@ void draw_rows(stringstream& s, Editor& ed)
 
         if (i != ed.screen_rows-1)
             s << "\r\n";
-
     }
 
 }

@@ -24,7 +24,6 @@ testsrcs := $(wildcard $(testdir)/*.cpp)
 testobjs := $(patsubst $(testdir)/%.cpp, $(testdir)/%.o, $(testsrcs))
 testbin := testbin
 testflags := -l boost_unit_test_framework
-nomain := 
 
 test: $(bin) $(testbin)
 	./$(testbin)
@@ -34,6 +33,9 @@ $(testbin): $(testobjs) $(bin)
 
 $(testdir)/%.o: $(testdir)/%.cpp
 	$(CXX) $(CXXFALGS) -c $< -o $@
+
+run: $(bin)
+	alacritty -e sh -c "./$(bin) "$(file)""
 
 clean:
 	rm $(bin) $(objs) $(testbin) $(testobjs)

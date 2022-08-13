@@ -19,6 +19,7 @@ BOOST_AUTO_TEST_CASE(leftright)
     BOOST_CHECK(buf.left() == true);
     BOOST_CHECK(buf.right() == true);
     BOOST_CHECK(buf.right() == false);
+    BOOST_CHECK(buf.size() == 7);
 }
 
 BOOST_AUTO_TEST_CASE(strconst)
