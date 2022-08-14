@@ -124,17 +124,29 @@ string GapBuff<char>::gap_string() // for testing
 }
 
 template <>
-string GapBuff<char>::to_string()
+string GapBuff<char>::left_string()
 {
     string s {};
     for (size_t i = 0; i < l; i++)
         s += (arr[i]);
-
-    for (size_t i = r; i < r + rlen; i++)
-        s += arr[i];
-
     return s;
 }
+
+template <>
+string GapBuff<char>::right_string()
+{
+    string s {};
+    for (size_t i = r; i < r + rlen; i++)
+        s += arr[i];
+    return s;
+}
+
+template <>
+string GapBuff<char>::to_string()
+{
+    return left_string() + right_string();
+}
+
 
 template<typename T>
 size_t GapBuff<T>::size()

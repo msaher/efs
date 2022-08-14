@@ -28,3 +28,20 @@ BOOST_AUTO_TEST_CASE(strconst)
     GapBuff<char> buf {s};
     BOOST_CHECK(buf.gap_string() == "_" + s);
 }
+
+BOOST_AUTO_TEST_CASE(lrstr)
+{
+    GapBuff<char> buf;
+    buf.insert('a');
+    buf.insert('b');
+    buf.insert('c');
+    buf.insert('d');
+    buf.insert('e');
+    buf.insert('f');
+    buf.left();
+    buf.left();
+    buf.left();
+
+    BOOST_CHECK(buf.left_string() == "abc");
+    BOOST_CHECK(buf.right_string() == "def");
+}

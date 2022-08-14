@@ -29,6 +29,8 @@ class GapBuff {
     std::size_t size();
 
     std::string gap_string();
+    std::string left_string();
+    std::string right_string();
     std::string to_string();
 };
 

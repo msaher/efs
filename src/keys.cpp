@@ -102,6 +102,8 @@ void insert_process_key(int c, Editor& ed)
                 ed.cx--;
             }
             return;
+        case '\r':
+            break;
     }
 
     if (ed.buf.empty())
