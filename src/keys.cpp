@@ -96,6 +96,12 @@ void insert_process_key(int c, Editor& ed)
         case '\x1b':
             ed.mode = NORMAL;
             return;
+        case BACKSPACE:
+            if (!ed.buf.empty()) {
+                ed.buf[ed.cy]->remove();
+                ed.cx--;
+            }
+            return;
     }
 
     if (ed.buf.empty())
