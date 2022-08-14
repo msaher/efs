@@ -141,6 +141,13 @@ string GapBuff<char>::right_string()
     return s;
 }
 
+template<typename T>
+void GapBuff<T>::right_remove()
+{
+    r = arrcap;
+    rlen = 0;
+}
+
 template <>
 string GapBuff<char>::to_string()
 {

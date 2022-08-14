@@ -89,6 +89,13 @@ void load(Editor& ed, string& filename)
     file.close();
 }
 
+GapBuff<char>* split(GapBuff<char> buf)
+{
+    string rightstr = buf.right_string();
+    buf.right_remove();
+    return new GapBuff<char>(rightstr);
+}
+
 Editor::~Editor()
 {
     for (auto& gb : buf)

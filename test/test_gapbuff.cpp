@@ -45,3 +45,34 @@ BOOST_AUTO_TEST_CASE(lrstr)
     BOOST_CHECK(buf.left_string() == "abc");
     BOOST_CHECK(buf.right_string() == "def");
 }
+
+BOOST_AUTO_TEST_CASE(rremove)
+{
+    GapBuff<char> buf;
+    buf.right_remove();
+    buf.insert('a');
+    buf.insert('b');
+    buf.insert('c');
+    buf.insert('d');
+    buf.insert('e');
+    buf.insert('f');
+    buf.right_remove();
+    BOOST_CHECK(buf.to_string() == "abcdef");
+
+    buf.left();
+    buf.left();
+    buf.left();
+
+    buf.right_remove();
+    BOOST_CHECK(buf.to_string() == "abc");
+    buf.insert('d');
+    buf.insert('e');
+    buf.insert('f');
+    BOOST_CHECK(buf.to_string() == "abcdef");
+
+    buf.left();
+    buf.left();
+    buf.right_remove();
+    BOOST_CHECK(buf.to_string() == "abcd");
+}
+

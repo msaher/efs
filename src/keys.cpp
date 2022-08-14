@@ -4,6 +4,9 @@
 #include "editor.h"
 #include <unistd.h>
 #include <errno.h>
+#include <string>
+
+using std::string;
 
 void normal_process_key(int, Editor&);
 void insert_process_key(int, Editor&);
@@ -103,7 +106,7 @@ void insert_process_key(int c, Editor& ed)
             }
             return;
         case '\r':
-            break;
+            // TODO
     }
 
     if (ed.buf.empty())
