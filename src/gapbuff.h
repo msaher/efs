@@ -25,6 +25,7 @@ class GapBuff {
     void grow();
     void insert(T);
     bool remove();
+    void set_pos(size_t);
     std::size_t size();
 
     std::string gap_string();

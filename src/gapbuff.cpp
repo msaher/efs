@@ -92,6 +92,16 @@ bool GapBuff<T>::remove()
 }
 
 template <typename T>
+void GapBuff<T>::set_pos(size_t pos)
+{
+    while (pos < l)
+        this->left();
+
+    while (pos > l)
+        this->right();
+}
+
+template <typename T>
 GapBuff<T>::~GapBuff()
 {
     free(arr);

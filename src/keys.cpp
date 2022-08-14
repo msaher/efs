@@ -6,6 +6,7 @@
 #include <errno.h>
 
 void normal_process_key(int, Editor&);
+void insert_process_key(int, Editor&);
 
 int handle_escape()
 {
@@ -43,9 +44,21 @@ int read_key()
 
 void process_key(int c, Editor& ed)
 {
+    switch (ed.mode) {
+        case NORMAL:
+            normal_process_key(c, ed);
+            break;
+        case INSERT:
+            insert_process_key(c, ed);
+            break;
+    }
+}
+
+void normal_process_key(int c, Editor& ed)
+{
     switch (c) {
-        case '\x1b':
-            ed.mode = NORMAL;
+        case 'q':
+            exit(0);
             break;
         case 'i':
             ed.mode = INSERT;
@@ -55,18 +68,6 @@ void process_key(int c, Editor& ed)
         case DOWN:
         case UP:
             move_cursor(ed, c);
-            break;
-        default:
-            if (ed.mode == NORMAL)
-                normal_process_key(c, ed);
-    }
-}
-
-void normal_process_key(int c, Editor& ed)
-{
-    switch (c) {
-        case 'q':
-            exit(0);
             break;
         case 'h':
             move_cursor(ed, LEFT);
@@ -83,7 +84,25 @@ void normal_process_key(int c, Editor& ed)
     }
 }
 
-void insert_process(int c, Editor& ed)
+void insert_process_key(int c, Editor& ed)
 {
-}
+    switch(c) {
+        case LEFT:
+        case RIGHT:
+        case UP:
+        case DOWN:
+            move_cursor(ed, c);
+            return;
+        case '\x1b':
+            ed.mode = NORMAL;
+            return;
+    }
 
+    if (ed.buf.empty())
+        ed.buf.push_back(new GapBuff<char>());
+
+    GapBuff<char>* currow = ed.buf[ed.cy];
+    currow->set_pos(ed.cx);
+    currow->insert(static_cast<char>(c));
+    ed.cx++;
+}
