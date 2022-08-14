@@ -8,7 +8,6 @@
 #include "editor.h"
 #include <algorithm>
 
-using std::cout;
 using std::stringstream;
 using std::string;
 using std::size_t;
@@ -80,7 +79,7 @@ void draw_rows(stringstream& s, Editor& ed)
 
 void clear_screen()
 {
-    cout << "\x1b[2J"; // clear the screen
+    write(STDOUT_FILENO, "\x1b[2J", 4); // clear the screen
 }
 
 void draw_statusbar(stringstream& s, Editor& ed)
@@ -128,5 +127,6 @@ void refresh_screen(Editor& ed)
     s << "\x1b[" << (ed.cy-ed.rowoff)+1 << ";" << (ed.cx-ed.coloff)+1 << "H";
     s << "\x1b[?25h"; // unhide cursor
 
-    cout << s.str();
+    string str = s.str();
+    write(STDOUT_FILENO, str.c_str(), str.length());
 }
