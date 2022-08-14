@@ -15,6 +15,8 @@ int main(int, char* argv[])
 {
     set_raw();
     atexit(clear_screen);
+    window_size(ED.screen_rows, ED.screen_cols);
+    ED.screen_rows -= 2; // room for bar and messages
 
     if (*++argv != nullptr) {
         ED.filename = *argv;

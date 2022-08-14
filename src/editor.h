@@ -5,6 +5,11 @@
 #include <string>
 #include <fstream>
 
+enum Mode {
+    NORMAL,
+    INSERT,
+};
+
 struct Editor {
     unsigned int cx; // actual x coordinate
     unsigned int cy; // y coordinate
@@ -15,6 +20,7 @@ struct Editor {
     unsigned int currow;
     unsigned int rowoff;
     unsigned int coloff;
+    Mode mode;
     ~Editor();
 };
 

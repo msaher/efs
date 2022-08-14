@@ -34,8 +34,8 @@ void set_raw()
     raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
     raw.c_cflag |= (CS8);
     raw.c_oflag &= ~(OPOST);
-    /* raw.c_cc[VMIN] = 0; */
-    /* raw.c_cc[VTIME] = 1; */
+    /* raw.c_cc[VMIN] = 1; */
+    /* raw.c_cc[VTIME] = 0; */
 
     tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
@@ -73,10 +73,9 @@ void draw_rows(stringstream& s, Editor& ed)
         else
             s << "~";
 
-        if (i != ed.screen_rows-1)
-            s << "\r\n";
+        s << "\r\n";
+        s << "\x1b[K";
     }
-
 }
 
 void clear_screen()
@@ -84,9 +83,37 @@ void clear_screen()
     cout << "\x1b[2J"; // clear the screen
 }
 
+void draw_statusbar(stringstream& s, Editor& ed)
+{
+    s << "\x1b[7m"; // white 
+
+    size_t len;
+    if (ed.filename == "") {
+        s << "[No Name]";
+        len = 9;
+    }
+    else {
+        s << ed.filename;
+        len = ed.filename.length();
+    }
+
+    for (size_t i = 0; i < ed.screen_cols-len; i++)
+        s << " ";
+
+
+    s << "\x1b[m";
+    s << "\r\n";
+}
+
+void draw_messagebar(stringstream& s, Editor& ed)
+{
+    s << "\x1b[K";
+    if (ed.mode == INSERT)
+        s << "-- INSERT --";
+}
+
 void refresh_screen(Editor& ed)
 {
-    window_size(ed.screen_rows, ed.screen_cols);
     scroll_maybe(ed);
 
     stringstream s;
@@ -95,6 +122,8 @@ void refresh_screen(Editor& ed)
     s << "\x1b[H"; // go to row 1 column 1
 
     draw_rows(s, ed);
+    draw_statusbar(s, ed);
+    draw_messagebar(s, ed);
 
     s << "\x1b[" << (ed.cy-ed.rowoff)+1 << ";" << (ed.cx-ed.coloff)+1 << "H";
     s << "\x1b[?25h"; // unhide cursor
