@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include "keys.h"
 #include "editor.h"
-
-using std::cin;
+#include <unistd.h>
+#include <errno.h>
 
 void normal_process_key(int, Editor&);
 
@@ -11,7 +11,8 @@ int handle_escape()
 {
     char seq[3];
     for (int i = 0; i < 2; i++) // read three times
-        cin >> seq[i];
+        if (read(STDIN_FILENO, seq+i, 1) != 1)
+            return '\x1b';
 
     if (seq[0] == '[')
         switch (seq[1]) {
@@ -29,7 +30,10 @@ int handle_escape()
 int read_key()
 {
     char c;
-    cin >> c;
+    int n;
+    while ((n = read(STDIN_FILENO, &c, 1)) != 1)
+        if (n == -1 && errno == EAGAIN)
+            throw std::runtime_error("Can't read");
 
     if (c == '\x1b')
         return handle_escape();
