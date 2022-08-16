@@ -35,7 +35,7 @@ $(testdir)/%.o: $(testdir)/%.cpp
 	$(CXX) $(CXXFALGS) -c $< -o $@
 
 run: $(bin)
-	alacritty -e sh -c "./$(bin) "$(file)""
+	tmux split-pane -h sh -c "./$(bin) "$(file)""
 
 clean:
 	rm $(bin) $(objs) $(testbin) $(testobjs)
