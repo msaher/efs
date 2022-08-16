@@ -50,7 +50,7 @@ void move_cursor(Editor& ed, int dir)
                 ed.cy--;
             break;
         case DOWN:
-            if (ed.cy < numrows(ed))
+            if (ed.cy != ed.buf.size()-1)
                 ed.cy++;
             break;
         default:
