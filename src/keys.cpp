@@ -106,7 +106,7 @@ void insert_process_key(int c, Editor& ed)
             }
             return;
         case '\r':
-            // TODO
+            return;
     }
 
     if (ed.buf.empty())

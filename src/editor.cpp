@@ -24,17 +24,17 @@ inline size_t numrows(const Editor& ed)
     return ed.buf.size();
 }
 
-inline GapBuff<char>* currow(const Editor& ed)
+
+GapBuff<char>* get_currow(Editor& ed)
 {
-    if (ed.buf.size() == 0)
-        return NULL;
-    else
-        return ed.buf[ed.cy];
+    if (ed.cy < ed.buf.size()) // size=0 or ed.cy > size
+        return nullptr;
+    return ed.buf[ed.cy];
 }
 
 void move_cursor(Editor& ed, int dir)
 {
-    GapBuff<char>* row = currow(ed);
+    GapBuff<char>* row = get_currow(ed);
 
     switch (dir) {
         case LEFT:
@@ -57,7 +57,7 @@ void move_cursor(Editor& ed, int dir)
             // TODO:
             break;
     }
-	row = currow(ed);
+	row = get_currow(ed);
 	if (row != NULL)
 	  ed.cx = min<size_t>(ed.cx, row->size());
 	else
