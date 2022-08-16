@@ -27,6 +27,7 @@ class GapBuff {
     bool remove();
     void set_pos(size_t);
     std::size_t size();
+    bool empty();
     void right_remove();
 
     std::string gap_string();

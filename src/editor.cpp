@@ -99,13 +99,21 @@ void adjust_gap(Editor& ed)
         currow->set_pos(ed.cx);
 }
 
+void delete_row(Editor& ed, size_t index)
+{
+    ed.buf.erase(ed.buf.begin()+index);
+    if (!ed.buf.empty())
+        move_cursor(ed, DOWN);
+}
+
 void back_space(Editor& ed)
 {
     GapBuff<char>* currow = get_currow(ed);
-    if (currow != nullptr) {
-        currow->remove();
-        ed.cx--;
-    }
+    if (currow == nullptr)
+        return;
+
+    currow->remove();
+    move_cursor(ed, DOWN);
 }
 
 /* void newline(Editor& ed) */

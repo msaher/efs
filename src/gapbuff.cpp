@@ -161,4 +161,10 @@ size_t GapBuff<T>::size()
     return l+rlen;
 }
 
+template<typename T>
+bool GapBuff<T>::empty()
+{
+    return this->size() == 0;
+}
+
 template class GapBuff<char>;
