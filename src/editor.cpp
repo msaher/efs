@@ -19,12 +19,6 @@ void load(Editor& ed, ifstream& file)
     }
 }
 
-inline size_t numrows(const Editor& ed)
-{
-    return ed.buf.size();
-}
-
-
 GapBuff<char>* get_currow(Editor& ed)
 {
     if (ed.cy < ed.buf.size()) // size=0 or ed.cy > size
