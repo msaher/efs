@@ -105,6 +105,7 @@ void insert_process_key(int c, Editor& ed)
             back_space(ed);
             return;
         case '\r':
+            insert_newline(ed);
             return;
     }
 

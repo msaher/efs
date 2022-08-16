@@ -109,20 +109,23 @@ void delete_row(Editor& ed, size_t index)
 void back_space(Editor& ed)
 {
     GapBuff<char>* currow = get_currow(ed);
-    if (currow == nullptr)
+    if (currow == nullptr || ed.cx == 0)
         return;
 
     currow->remove();
-    move_cursor(ed, DOWN);
+    move_cursor(ed, LEFT);
 }
 
-/* void newline(Editor& ed) */
-/* { */
-/*     GapBuff<char>* currow = get_currow(ed); */
-/*     if (currow == nullptr) */
-/*         return; */
 
-/* } */
+void insert_newline(Editor& ed)
+{
+    GapBuff<char>* currow = get_currow(ed);
+    if (currow == nullptr)
+        return;
+    GapBuff<char>* newrow = new GapBuff<char>();
+    ed.buf.insert(ed.buf.begin()+ed.cy+1, newrow);
+    move_cursor(ed, DOWN);
+}
 
 Editor::~Editor()
 {
