@@ -89,21 +89,20 @@ void normal_process_key(int c, Editor& ed)
 
 void insert_process_key(int c, Editor& ed)
 {
+    adjust_gap(ed);
     switch(c) {
         case LEFT:
         case RIGHT:
         case UP:
         case DOWN:
             move_cursor(ed, c);
+            adjust_gap(ed);
             return;
         case '\x1b':
             ed.mode = NORMAL;
             return;
         case BACKSPACE:
-            if (!ed.buf.empty()) {
-                ed.buf[ed.cy]->remove();
-                ed.cx--;
-            }
+            back_space(ed);
             return;
         case '\r':
             return;

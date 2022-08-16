@@ -21,14 +21,16 @@ void load(Editor& ed, ifstream& file)
 
 GapBuff<char>* get_currow(Editor& ed)
 {
-    if (ed.cy < ed.buf.size()) // size=0 or ed.cy > size
+    if (ed.buf.size() == 0) // size=0 or ed.cy > size
         return nullptr;
     return ed.buf[ed.cy];
 }
 
 void move_cursor(Editor& ed, int dir)
 {
-    GapBuff<char>* row = get_currow(ed);
+    GapBuff<char>* currow = get_currow(ed);
+    if (currow == nullptr)
+        return;
 
     switch (dir) {
         case LEFT:
@@ -36,7 +38,7 @@ void move_cursor(Editor& ed, int dir)
                 ed.cx--;
             break;
         case RIGHT:
-            if (row != NULL && ed.cx < row->size())
+            if (currow != nullptr && ed.cx < currow->size())
                 ed.cx++;
             break;
         case UP:
@@ -51,9 +53,9 @@ void move_cursor(Editor& ed, int dir)
             // TODO:
             break;
     }
-	row = get_currow(ed);
-	if (row != NULL)
-	  ed.cx = min<size_t>(ed.cx, row->size());
+	currow = get_currow(ed);
+	if (currow != nullptr)
+	  ed.cx = min<size_t>(ed.cx, currow->size());
 	else
 	  ed.cx = 0;
 }
@@ -89,6 +91,30 @@ GapBuff<char>* split(GapBuff<char> buf)
     buf.right_remove();
     return new GapBuff<char>(rightstr);
 }
+
+void adjust_gap(Editor& ed)
+{
+    GapBuff<char>* currow = get_currow(ed);
+    if (currow != nullptr)
+        currow->set_pos(ed.cx);
+}
+
+void back_space(Editor& ed)
+{
+    GapBuff<char>* currow = get_currow(ed);
+    if (currow != nullptr) {
+        currow->remove();
+        ed.cx--;
+    }
+}
+
+/* void newline(Editor& ed) */
+/* { */
+/*     GapBuff<char>* currow = get_currow(ed); */
+/*     if (currow == nullptr) */
+/*         return; */
+
+/* } */
 
 Editor::~Editor()
 {

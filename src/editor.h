@@ -31,4 +31,6 @@ void scroll_maybe(Editor& ed);
 inline size_t numrows(const Editor&);
 inline GapBuff<char>* currow(const Editor&);
 GapBuff<char>* split(GapBuff<char>);
+void adjust_gap(Editor&);
+void back_space(Editor&);
 #endif
