@@ -34,4 +34,5 @@ GapBuff<char>* split(GapBuff<char>);
 void adjust_gap(Editor&);
 void back_space(Editor&);
 void insert_newline(Editor&);
+GapBuff<char>* get_currow(Editor& ed);
 #endif

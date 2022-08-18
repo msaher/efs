@@ -3,8 +3,10 @@
 #include <boost/test/unit_test.hpp>
 #include "../src/gapbuff.h"
 #include <string>
+#include <iostream>
 
 using std::string;
+using std::cout;
 
 BOOST_AUTO_TEST_CASE(leftright)
 {
@@ -19,6 +21,9 @@ BOOST_AUTO_TEST_CASE(leftright)
     BOOST_CHECK(buf.move_left() == true);
     BOOST_CHECK(buf.move_right() == true);
     BOOST_CHECK(buf.move_right() == false);
+    cout << buf.gap_string() << '\n';
+    buf.move_right();
+    cout << buf.gap_string() << '\n';
     BOOST_CHECK(buf.size() == 7);
 }
 

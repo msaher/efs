@@ -99,11 +99,17 @@ bool GapBuff<T>::remove()
 template <typename T>
 void GapBuff<T>::set_pos(size_t pos)
 {
-    while (pos < left)
-        this->move_left();
+    if (pos == left) // no need to move
+        return;
 
-    while (pos > right)
-        this->move_right();
+    bool (GapBuff::*move)();
+    if (left < pos)
+        move = &GapBuff<T>::move_right;
+    else
+        move = &GapBuff<T>::move_left;
+
+    while (pos != left)
+        (this->*move)();
 }
 
 template <typename T>

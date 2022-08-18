@@ -53,11 +53,15 @@ void move_cursor(Editor& ed, int dir)
             // TODO:
             break;
     }
+
 	currow = get_currow(ed);
-	if (currow != nullptr)
-	  ed.cx = min<size_t>(ed.cx, currow->size());
-	else
-	  ed.cx = 0;
+	if (currow == nullptr) {
+        ed.cx = 0;
+        return;
+    }
+
+    ed.cx = min<size_t>(ed.cx, currow->size());
+    currow->set_pos(ed.cx);
 }
 
 void scroll_maybe(Editor& ed)
@@ -113,9 +117,9 @@ void back_space(Editor& ed)
         return;
 
     currow->remove();
-    move_cursor(ed, LEFT);
+    ed.cx--;
+    /* move_cursor(ed, LEFT); */
 }
-
 
 void insert_newline(Editor& ed)
 {

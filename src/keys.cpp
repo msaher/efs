@@ -89,14 +89,12 @@ void normal_process_key(int c, Editor& ed)
 
 void insert_process_key(int c, Editor& ed)
 {
-    adjust_gap(ed);
     switch(c) {
         case LEFT:
         case RIGHT:
         case UP:
         case DOWN:
             move_cursor(ed, c);
-            adjust_gap(ed);
             return;
         case '\x1b':
             ed.mode = NORMAL;
@@ -112,8 +110,8 @@ void insert_process_key(int c, Editor& ed)
     if (ed.buf.empty())
         ed.buf.push_back(new GapBuff<char>());
 
-    GapBuff<char>* currow = ed.buf[ed.cy];
-    currow->set_pos(ed.cx);
+    GapBuff<char>* currow = get_currow(ed);
+    /* currow->set_pos(ed.cx); */
     currow->insert(static_cast<char>(c));
     ed.cx++;
 }
