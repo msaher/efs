@@ -134,8 +134,10 @@ void back_space(Editor& ed)
 void insert_newline(Editor& ed)
 {
     GapBuff<char>* currow = get_currow(ed);
-    if (currow == nullptr)
-        return;
+    if (currow == nullptr) {
+        currow = new GapBuff<char>();
+        ed.buf.push_back(currow);
+    }
     string rstr = currow->right_string();
     currow->right_remove();
     GapBuff<char>* newrow = new GapBuff<char>(rstr);
