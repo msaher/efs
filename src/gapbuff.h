@@ -6,12 +6,12 @@
 
 template <typename T>
 class GapBuff {
-    T* arr; // dynamic array
-    std::size_t arrcap;
+    T* array; // dynamic array
+    std::size_t capacity;
 
-    std::size_t l; // index of the first gap position
-    std::size_t r; // index of the first valid position after the gap
-                   // Invarient: r > l
+    std::size_t left; // index of the first gap position
+    std::size_t right; // index of the first valid position after the gap
+                       // Invarient: r > l
 
     std::size_t rlen; // length after the gap
 
@@ -20,8 +20,8 @@ class GapBuff {
     GapBuff(std::size_t cap=DEFAULT_GAP_LEN);
     GapBuff(std::string);
     ~GapBuff();
-    bool left();
-    bool right();
+    bool move_left();
+    bool move_right();
     void grow();
     void insert(T);
     bool remove();

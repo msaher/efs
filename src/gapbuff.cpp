@@ -14,43 +14,47 @@ using std::string;
 template <typename T>
 GapBuff<T>::GapBuff(size_t cap)
 {
-    arrcap = cap;
-    arr = (T*) malloc(cap*sizeof(T));
-    l = 0;
-    r = cap;
+    capacity = cap;
+    array = (T*) malloc(cap*sizeof(T));
+    left = 0;
+    right = cap;
     rlen = 0;
 }
 
 template <>
 GapBuff<char>::GapBuff(string str)
 {
-    arrcap = rlen = str.length();
-    arr = (char*) malloc(arrcap*sizeof(char)+1); // +1 for the gap of
-    l = 0;
-    r = 1;
-    memcpy((arr+1), str.c_str(), rlen);
+    // _____this is a string
+    size_t strlen = str.length();
+    size_t gaplen = DEFAULT_GAP_LEN;
+    capacity = strlen + gaplen;
+    rlen = strlen;
+    right = gaplen;
+    left = 0;
+    array = (char*) malloc(capacity+gaplen);
+    memcpy(array+gaplen, str.c_str(), rlen);
 }
 
 
 template <typename T>
-bool GapBuff<T>::left()
+bool GapBuff<T>::move_left()
 {
-    if (l <= 1) // 1 because we don't want a___ to be moved
+    if (left == 0)
         return false;
 
-    arr[--r] = arr[--l];
+    array[--right] = array[--left];
     rlen++;
 
     return true;
 }
 
 template <typename T>
-bool GapBuff<T>::right()
+bool GapBuff<T>::move_right()
 {
-    if (r == arrcap)
+    if (rlen == 0)
         return false;
 
-    arr[l++] = arr[r++];
+    array[left++] = array[right++];
     rlen--;
 
     return true;
@@ -59,66 +63,67 @@ bool GapBuff<T>::right()
 template <typename T>
 void GapBuff<T>::insert(T c)
 {
-    arr[l++] = c;
+    array[left++] = c;
 
-    if (r == l)
+    if (right == left)
         grow();
-
-    /* std::cout << *this; */
 }
 
 template <typename T>
 void GapBuff<T>::grow()
 {
-    const size_t glen = arrcap; // gap length
-    arrcap *= 2;
-    arr = (T*) realloc(arr, arrcap*sizeof(T));
-    if (arr == nullptr)
+    // double the array capacity everytime we grow()
+    // If we're doubling the capacity, the new gap
+    // length is going to be equal to capacity
+    const size_t glen = capacity;
+    capacity *= 2;
+    array = (T*) realloc(array, capacity*sizeof(T));
+    if (array == nullptr)
         throw std::bad_alloc(); 
 
-    for (size_t i = r; i < r + rlen; i++)
-        arr[i+glen] = arr[i];
+    for (size_t i = right; i < right + rlen; i++)
+        array[i+glen] = array[i];
 
-    r += glen;
+    right += glen;
 }
 
 template <typename T>
 bool GapBuff<T>::remove()
 {
-    if(l == 0)
+    if(left == 0)
         return false;
-    l--;
+    left--;
     return true;
 }
 
 template <typename T>
 void GapBuff<T>::set_pos(size_t pos)
 {
-    while (pos < l)
-        this->left();
+    while (pos < left)
+        this->move_left();
 
-    while (pos > l)
-        this->right();
+    while (pos > right)
+        this->move_right();
 }
 
 template <typename T>
 GapBuff<T>::~GapBuff()
 {
-    free(arr);
+    free(array);
 }
 
 template <>
 string GapBuff<char>::gap_string() // for testing
 {
     string s {};
-    for (size_t i = 0; i < l; i++)
-        s += (arr[i]);
+    for (size_t i = 0; i < left; i++)
+        s += (array[i]);
 
-    for (size_t i = l; i < r; i++)
+    for (size_t i = left; i < right; i++)
         s += ("_");
 
-    for (size_t i = r; i < r + rlen; i++)
-        s += arr[i];
+    for (size_t i = right; i < right + rlen; i++)
+        s += array[i];
 
     return s;
 }
@@ -127,8 +132,8 @@ template <>
 string GapBuff<char>::left_string()
 {
     string s {};
-    for (size_t i = 0; i < l; i++)
-        s += (arr[i]);
+    for (size_t i = 0; i < left; i++)
+        s += (array[i]);
     return s;
 }
 
@@ -136,15 +141,15 @@ template <>
 string GapBuff<char>::right_string()
 {
     string s {};
-    for (size_t i = r; i < r + rlen; i++)
-        s += arr[i];
+    for (size_t i = right; i < right + rlen; i++)
+        s += array[i];
     return s;
 }
 
 template<typename T>
 void GapBuff<T>::right_remove()
 {
-    r = arrcap;
+    right = capacity;
     rlen = 0;
 }
 
@@ -158,7 +163,7 @@ string GapBuff<char>::to_string()
 template<typename T>
 size_t GapBuff<T>::size()
 {
-    return l+rlen;
+    return left+rlen;
 }
 
 template<typename T>

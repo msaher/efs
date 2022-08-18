@@ -16,9 +16,9 @@ BOOST_AUTO_TEST_CASE(leftright)
     buf.insert('e');
     buf.insert('f');
     buf.insert('g');
-    BOOST_CHECK(buf.left() == true);
-    BOOST_CHECK(buf.right() == true);
-    BOOST_CHECK(buf.right() == false);
+    BOOST_CHECK(buf.move_left() == true);
+    BOOST_CHECK(buf.move_right() == true);
+    BOOST_CHECK(buf.move_right() == false);
     BOOST_CHECK(buf.size() == 7);
 }
 
@@ -26,7 +26,8 @@ BOOST_AUTO_TEST_CASE(strconst)
 {
     string s = "this is a piece of text";
     GapBuff<char> buf {s};
-    BOOST_CHECK(buf.gap_string() == "_" + s);
+    std::cout << buf.gap_string();
+    BOOST_CHECK(buf.to_string() == s);
 }
 
 BOOST_AUTO_TEST_CASE(lrstr)
@@ -38,9 +39,9 @@ BOOST_AUTO_TEST_CASE(lrstr)
     buf.insert('d');
     buf.insert('e');
     buf.insert('f');
-    buf.left();
-    buf.left();
-    buf.left();
+    buf.move_left();
+    buf.move_left();
+    buf.move_left();
 
     BOOST_CHECK(buf.left_string() == "abc");
     BOOST_CHECK(buf.right_string() == "def");
@@ -59,9 +60,9 @@ BOOST_AUTO_TEST_CASE(rremove)
     buf.right_remove();
     BOOST_CHECK(buf.to_string() == "abcdef");
 
-    buf.left();
-    buf.left();
-    buf.left();
+    buf.move_left();
+    buf.move_left();
+    buf.move_left();
 
     buf.right_remove();
     BOOST_CHECK(buf.to_string() == "abc");
@@ -70,8 +71,8 @@ BOOST_AUTO_TEST_CASE(rremove)
     buf.insert('f');
     BOOST_CHECK(buf.to_string() == "abcdef");
 
-    buf.left();
-    buf.left();
+    buf.move_left();
+    buf.move_left();
     buf.right_remove();
     BOOST_CHECK(buf.to_string() == "abcd");
 }
