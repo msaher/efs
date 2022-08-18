@@ -136,8 +136,12 @@ void insert_newline(Editor& ed)
     GapBuff<char>* currow = get_currow(ed);
     if (currow == nullptr)
         return;
-    GapBuff<char>* newrow = new GapBuff<char>();
+    string rstr = currow->right_string();
+    currow->right_remove();
+    GapBuff<char>* newrow = new GapBuff<char>(rstr);
     ed.buf.insert(ed.buf.begin()+ed.cy+1, newrow);
+    newrow->set_pos(0);
+    ed.cx = 0;
     move_cursor(ed, DOWN);
 }
 
