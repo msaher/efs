@@ -112,12 +112,23 @@ void delete_row(Editor& ed, size_t index)
 void back_space(Editor& ed)
 {
     GapBuff<char>* currow = get_currow(ed);
-    if (currow == nullptr || ed.cx == 0)
+    if (currow == nullptr)
         return;
 
-    currow->remove();
-    ed.cx--;
-    /* move_cursor(ed, LEFT); */
+    if (ed.cx != 0) {
+        currow->remove();
+        ed.cx--;
+    }
+    else if (ed.cy != 0) { // join with previous line
+
+        string rstr = currow->right_string(); // for appending
+        ed.buf.erase(ed.buf.begin()+ed.cy);
+
+        size_t len = ed.buf[--ed.cy]->size(); // for positioning cursor
+
+        ed.buf[ed.cy]->append(rstr);
+        ed.buf[ed.cy]->set_pos(ed.cx = len);
+    }
 }
 
 void insert_newline(Editor& ed)
