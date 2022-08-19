@@ -6,7 +6,7 @@
 #include <iostream>
 
 using std::string;
-using std::cout;
+/* using std::cout; */
 
 BOOST_AUTO_TEST_CASE(leftright)
 {
@@ -21,9 +21,9 @@ BOOST_AUTO_TEST_CASE(leftright)
     BOOST_CHECK(buf.move_left() == true);
     BOOST_CHECK(buf.move_right() == true);
     BOOST_CHECK(buf.move_right() == false);
-    cout << buf.gap_string() << '\n';
+    /* cout << buf.gap_string() << '\n'; */
     buf.move_right();
-    cout << buf.gap_string() << '\n';
+    /* cout << buf.gap_string() << '\n'; */
     BOOST_CHECK(buf.size() == 7);
 }
 
@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(strconst)
 {
     string s = "this is a piece of text";
     GapBuff<char> buf {s};
-    std::cout << buf.gap_string();
+    /* std::cout << buf.gap_string(); */
     BOOST_CHECK(buf.to_string() == s);
 }
 
@@ -82,3 +82,10 @@ BOOST_AUTO_TEST_CASE(rremove)
     BOOST_CHECK(buf.to_string() == "abcd");
 }
 
+BOOST_AUTO_TEST_CASE(append)
+{
+    GapBuff<char> buf {"This is a c"};
+    string str {"ool string"};
+    buf.append(str);
+    BOOST_CHECK(buf.to_string() == "This is a cool string");
+}

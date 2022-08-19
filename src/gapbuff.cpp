@@ -152,6 +152,21 @@ string GapBuff<char>::right_string()
     return s;
 }
 
+template <typename T>
+void GapBuff<T>::goto_end()
+{
+    while (rlen != 0)
+        move_right();
+}
+
+template <>
+void GapBuff<char>::append(string str)
+{
+    goto_end(); // position the gap at the end
+    for (auto c : str)
+        insert(c);
+}
+
 template<typename T>
 void GapBuff<T>::right_remove()
 {
@@ -164,7 +179,6 @@ string GapBuff<char>::to_string()
 {
     return left_string() + right_string();
 }
-
 
 template<typename T>
 size_t GapBuff<T>::size()

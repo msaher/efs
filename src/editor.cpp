@@ -75,7 +75,6 @@ void scroll_maybe(Editor& ed)
       ed.coloff = ed.cx;
     else if(ed.cx >= ed.coloff + ed.screen_cols)
       ed.coloff = ed.cx - ed.screen_cols + 1;
-
 }
 
 void load(Editor& ed, string& filename)
