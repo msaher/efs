@@ -102,6 +102,7 @@ void adjust_gap(Editor& ed)
         currow->set_pos(ed.cx);
 }
 
+// TODO: use me
 void delete_row(Editor& ed, size_t index)
 {
     ed.buf.erase(ed.buf.begin()+index);
@@ -140,10 +141,11 @@ void insert_newline(Editor& ed)
     }
     string rstr = currow->right_string();
     currow->right_remove();
+
     GapBuff<char>* newrow = new GapBuff<char>(rstr);
     ed.buf.insert(ed.buf.begin()+ed.cy+1, newrow);
-    newrow->set_pos(0);
-    ed.cx = 0;
+
+    newrow->set_pos(ed.cx = 0);
     move_cursor(ed, DOWN);
 }
 
