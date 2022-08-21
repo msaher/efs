@@ -63,6 +63,9 @@ void normal_process_key(int c, Editor& ed)
         case 'q':
             exit(0);
             break;
+        case 's':
+            save(ed);
+            break;
         case 'i':
             ed.mode = INSERT;
             break;

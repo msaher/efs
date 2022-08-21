@@ -6,6 +6,7 @@
 #include <algorithm>
 
 using std::ifstream;
+using std::ofstream;
 using std::string;
 using std::min;
 
@@ -147,6 +148,19 @@ void insert_newline(Editor& ed)
 
     newrow->set_pos(ed.cx = 0);
     move_cursor(ed, DOWN);
+}
+
+void save(Editor& ed)
+{
+    ofstream file;
+    file.open(ed.filename);
+    if (!file.is_open())
+        throw std::runtime_error("Fatal: Can't save");
+
+    for (auto& gb : ed.buf)
+        file << gb->to_string() << "\n";
+
+    file.close();
 }
 
 Editor::~Editor()
