@@ -154,8 +154,10 @@ void save(Editor& ed)
 {
     ofstream file;
     file.open(ed.filename);
-    if (!file.is_open())
-        throw std::runtime_error("Fatal: Can't save");
+    if (!file.is_open()) {
+        ed.message = "ERROR: Can't save";
+        return;
+    }
 
     for (auto& gb : ed.buf)
         file << gb->to_string() << "\n";
