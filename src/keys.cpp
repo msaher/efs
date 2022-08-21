@@ -68,6 +68,7 @@ void normal_process_key(int c, Editor& ed)
             break;
         case 'i':
             ed.mode = INSERT;
+            ed.message = "-- INSERT --";
             break;
         case LEFT:
         case RIGHT:
@@ -101,6 +102,7 @@ void insert_process_key(int c, Editor& ed)
             return;
         case '\x1b':
             ed.mode = NORMAL;
+            ed.message = "";
             return;
         case BACKSPACE:
             back_space(ed);

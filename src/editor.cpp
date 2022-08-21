@@ -160,6 +160,7 @@ void save(Editor& ed)
     for (auto& gb : ed.buf)
         file << gb->to_string() << "\n";
 
+    ed.message = "saved successfully";
     file.close();
 }
 

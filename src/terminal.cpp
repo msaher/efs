@@ -111,8 +111,8 @@ void draw_statusbar(stringstream& s, Editor& ed)
 void draw_messagebar(stringstream& s, Editor& ed)
 {
     s << "\x1b[K";
-    if (ed.mode == INSERT)
-        s << "-- INSERT --";
+    string message;
+    s << ed.message;
 }
 
 void refresh_screen(Editor& ed)

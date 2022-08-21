@@ -21,6 +21,7 @@ struct Editor {
     unsigned int rowoff;
     unsigned int coloff;
     Mode mode;
+    std::string message;
     ~Editor();
 };
 
