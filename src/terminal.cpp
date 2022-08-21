@@ -77,9 +77,13 @@ void draw_rows(stringstream& s, Editor& ed)
     }
 }
 
-void clear_screen()
+void cleanup_term()
 {
-    write(STDOUT_FILENO, "\x1b[2J", 4); // clear the screen
+    stringstream s {};
+    s << "\x1b[2J", // clear the screen
+    s << "\x1b[H"; // go to row 1 column 1
+    string str = s.str();
+    write(STDOUT_FILENO, str.c_str(), str.length());
 }
 
 void draw_statusbar(stringstream& s, Editor& ed)
