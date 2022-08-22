@@ -4,7 +4,7 @@ srcs := $(wildcard $(srcdir)/*.cpp)
 objs := $(patsubst $(srcdir)/%.cpp, $(objdir)/%.o, $(srcs))
 
 CXXFLAGS := -g -Wall -Wextra --std=c++20
-bin := vic
+bin := efs
 
 .PHONEY: all clean test
 
@@ -38,4 +38,4 @@ run: $(bin)
 	tmux split-pane -h sh -c "./$(bin) "$(file)""
 
 clean:
-	rm $(bin) $(objs) $(testbin) $(testobjs)
+	rm -f $(bin) $(objs) $(testbin) $(testobjs)
