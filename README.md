@@ -1,4 +1,4 @@
-A basic text editor from scratch - no libraries - where text is
+A basic text editor from scratch (no libraries) where text is
 represented as a vector of gap buffers.
 
 # Acknowledgment
