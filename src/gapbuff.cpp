@@ -11,18 +11,16 @@ using std::ostream;
 using std::size_t;
 using std::string;
 
-template <typename T>
-GapBuff<T>::GapBuff(size_t cap)
+GapBuff::GapBuff(size_t cap)
 {
     capacity = cap;
-    array = (T*) malloc(cap*sizeof(T));
+    array = (char*) malloc(cap*sizeof(char));
     left = 0;
     right = cap;
     rlen = 0;
 }
 
-template <>
-GapBuff<char>::GapBuff(string str)
+GapBuff::GapBuff(string str)
 {
     // _____this is a string
     size_t strlen = str.length();
@@ -36,8 +34,7 @@ GapBuff<char>::GapBuff(string str)
 }
 
 
-template <typename T>
-bool GapBuff<T>::move_left()
+bool GapBuff::move_left()
 {
     if (left == 0)
         return false;
@@ -48,8 +45,7 @@ bool GapBuff<T>::move_left()
     return true;
 }
 
-template <typename T>
-bool GapBuff<T>::move_right()
+bool GapBuff::move_right()
 {
     if (rlen == 0)
         return false;
@@ -60,8 +56,7 @@ bool GapBuff<T>::move_right()
     return true;
 }
 
-template <typename T>
-void GapBuff<T>::insert(T c)
+void GapBuff::insert(char c)
 {
     array[left++] = c;
 
@@ -69,17 +64,16 @@ void GapBuff<T>::insert(T c)
         grow();
 }
 
-template <typename T>
-void GapBuff<T>::grow()
+void GapBuff::grow()
 {
     // double the array capacity everytime we grow()
     // If we're doubling the capacity, the new gap
     // length is going to be equal to capacity
     const size_t glen = capacity;
     capacity *= 2;
-    array = (T*) realloc(array, capacity*sizeof(T));
+    array = (char*) realloc(array, capacity*sizeof(char));
     if (array == nullptr)
-        throw std::bad_alloc(); 
+        throw std::bad_alloc();
 
     for (size_t i = right; i < right + rlen; i++)
         array[i+glen] = array[i];
@@ -87,8 +81,7 @@ void GapBuff<T>::grow()
     right += glen;
 }
 
-template <typename T>
-bool GapBuff<T>::remove()
+bool GapBuff::remove()
 {
     if(left == 0)
         return false;
@@ -96,30 +89,27 @@ bool GapBuff<T>::remove()
     return true;
 }
 
-template <typename T>
-void GapBuff<T>::set_pos(size_t pos)
+void GapBuff::set_pos(size_t pos)
 {
     if (pos == left) // no need to move
         return;
 
     bool (GapBuff::*move)();
     if (left < pos)
-        move = &GapBuff<T>::move_right;
+        move = &GapBuff::move_right;
     else
-        move = &GapBuff<T>::move_left;
+        move = &GapBuff::move_left;
 
     while (pos != left)
         (this->*move)();
 }
 
-template <typename T>
-GapBuff<T>::~GapBuff()
+GapBuff::~GapBuff()
 {
     free(array);
 }
 
-template <>
-string GapBuff<char>::gap_string() // for testing
+string GapBuff::gap_string() // for testing
 {
     string s {};
     for (size_t i = 0; i < left; i++)
@@ -134,8 +124,7 @@ string GapBuff<char>::gap_string() // for testing
     return s;
 }
 
-template <>
-string GapBuff<char>::left_string()
+string GapBuff::left_string()
 {
     string s {};
     for (size_t i = 0; i < left; i++)
@@ -143,8 +132,7 @@ string GapBuff<char>::left_string()
     return s;
 }
 
-template <>
-string GapBuff<char>::right_string()
+string GapBuff::right_string()
 {
     string s {};
     for (size_t i = right; i < right + rlen; i++)
@@ -152,44 +140,37 @@ string GapBuff<char>::right_string()
     return s;
 }
 
-template <typename T>
-void GapBuff<T>::goto_end()
+void GapBuff::goto_end()
 {
     while (rlen != 0)
         move_right();
 }
 
-template <>
-void GapBuff<char>::append(string str)
+void GapBuff::append(string str)
 {
     goto_end(); // position the gap at the end
     for (auto c : str)
         insert(c);
 }
 
-template<typename T>
-void GapBuff<T>::right_remove()
+void GapBuff::right_remove()
 {
     right = capacity;
     rlen = 0;
 }
 
-template <>
-string GapBuff<char>::to_string()
+string GapBuff::to_string()
 {
     return left_string() + right_string();
 }
 
-template<typename T>
-size_t GapBuff<T>::size()
+size_t GapBuff::size()
 {
     return left+rlen;
 }
 
-template<typename T>
-bool GapBuff<T>::empty()
+bool GapBuff::empty()
 {
     return this->size() == 0;
 }
 
-template class GapBuff<char>;

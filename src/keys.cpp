@@ -113,9 +113,9 @@ void insert_process_key(int c, Editor& ed)
     }
 
     if (ed.buf.empty())
-        ed.buf.push_back(new GapBuff<char>());
+        ed.buf.push_back(new GapBuff());
 
-    GapBuff<char>* currow = get_currow(ed);
+    GapBuff* currow = get_currow(ed);
     /* currow->set_pos(ed.cx); */
     currow->insert(static_cast<char>(c));
     ed.cx++;

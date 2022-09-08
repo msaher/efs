@@ -16,7 +16,7 @@ struct Editor {
     unsigned int screen_cols; // window size
     unsigned int screen_rows;
     std::string filename;
-    std::vector<GapBuff<char>*> buf;
+    std::vector<GapBuff*> buf;
     unsigned int currow;
     unsigned int rowoff;
     unsigned int coloff;
@@ -30,11 +30,11 @@ void load(Editor&, std::string&);
 void move_cursor(Editor&, int);
 void scroll_maybe(Editor& ed);
 inline size_t numrows(const Editor&);
-inline GapBuff<char>* currow(const Editor&);
-GapBuff<char>* split(GapBuff<char>);
+inline GapBuff* currow(const Editor&);
+GapBuff* split(GapBuff);
 void adjust_gap(Editor&);
 void back_space(Editor&);
 void insert_newline(Editor&);
 void save(Editor&);
-GapBuff<char>* get_currow(Editor& ed);
+GapBuff* get_currow(Editor& ed);
 #endif

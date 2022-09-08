@@ -13,14 +13,14 @@ using std::min;
 void load(Editor& ed, ifstream& file)
 {
     std::string line;
-    GapBuff<char>* gb;
+    GapBuff* gb;
     while (getline(file, line)) {
-        gb = new GapBuff<char>(line);
+        gb = new GapBuff(line);
         ed.buf.push_back(gb);
     }
 }
 
-GapBuff<char>* get_currow(Editor& ed)
+GapBuff* get_currow(Editor& ed)
 {
     if (ed.buf.size() == 0) // size=0 or ed.cy > size
         return nullptr;
@@ -29,7 +29,7 @@ GapBuff<char>* get_currow(Editor& ed)
 
 void move_cursor(Editor& ed, int dir)
 {
-    GapBuff<char>* currow = get_currow(ed);
+    GapBuff* currow = get_currow(ed);
     if (currow == nullptr)
         return;
 
@@ -89,16 +89,16 @@ void load(Editor& ed, string& filename)
     file.close();
 }
 
-GapBuff<char>* split(GapBuff<char> buf)
+GapBuff* split(GapBuff buf)
 {
     string rightstr = buf.right_string();
     buf.right_remove();
-    return new GapBuff<char>(rightstr);
+    return new GapBuff(rightstr);
 }
 
 void adjust_gap(Editor& ed)
 {
-    GapBuff<char>* currow = get_currow(ed);
+    GapBuff* currow = get_currow(ed);
     if (currow != nullptr)
         currow->set_pos(ed.cx);
 }
@@ -113,7 +113,7 @@ void delete_row(Editor& ed, size_t index)
 
 void back_space(Editor& ed)
 {
-    GapBuff<char>* currow = get_currow(ed);
+    GapBuff* currow = get_currow(ed);
     if (currow == nullptr)
         return;
 
@@ -135,15 +135,15 @@ void back_space(Editor& ed)
 
 void insert_newline(Editor& ed)
 {
-    GapBuff<char>* currow = get_currow(ed);
+    GapBuff* currow = get_currow(ed);
     if (currow == nullptr) {
-        currow = new GapBuff<char>();
+        currow = new GapBuff();
         ed.buf.push_back(currow);
     }
     string rstr = currow->right_string();
     currow->right_remove();
 
-    GapBuff<char>* newrow = new GapBuff<char>(rstr);
+    GapBuff* newrow = new GapBuff(rstr);
     ed.buf.insert(ed.buf.begin()+ed.cy+1, newrow);
 
     newrow->set_pos(ed.cx = 0);

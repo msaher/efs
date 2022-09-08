@@ -88,7 +88,7 @@ void cleanup_term()
 
 void draw_statusbar(stringstream& s, Editor& ed)
 {
-    s << "\x1b[7m"; // white 
+    s << "\x1b[7m"; // white
 
     size_t len;
     if (ed.filename == "") {

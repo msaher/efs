@@ -4,9 +4,8 @@
 #include <cstddef>
 #include <iostream>
 
-template <typename T>
 class GapBuff {
-    T* array; // dynamic array
+    char* array; // dynamic array
     std::size_t capacity;
 
     std::size_t left; // index of the first gap position
@@ -23,7 +22,7 @@ class GapBuff {
     bool move_left();
     bool move_right();
     void grow();
-    void insert(T);
+    void insert(char);
     bool remove();
     void set_pos(size_t);
     std::size_t size();
