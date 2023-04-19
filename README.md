@@ -1,6 +1,8 @@
 A basic text editor from scratch (no libraries) where text is
 represented as a vector of [gap buffers](https://en.wikipedia.org/wiki/Gap_buffer).
 
+![](./efs.png)
+
 # Acknowledgment
 
 -   [`kilo`](https://github.com/antirez/kilo)
